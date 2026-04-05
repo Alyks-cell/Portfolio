@@ -19,7 +19,7 @@ const Navbar = () => {
         <a href="#contact" className="nav-link">Contact</a>
       </div>
     </nav>
-  )
+  ) 
 }
 
 export default Navbar
