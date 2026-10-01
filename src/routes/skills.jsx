@@ -1,43 +1,69 @@
 import React from 'react'
+import {
+  SiHtml5, SiCss, SiJavascript, SiPhp, SiFigma, SiCanva, SiGithub, SiWordpress,
+} from 'react-icons/si'
+import { FaJava } from 'react-icons/fa6'
+import { TbBrandAdobePhotoshop, TbBrandAdobe, TbSql } from 'react-icons/tb'
 
-const skills = [
-  { name: 'HTML', emoji: '🌐' },
-  { name: 'CSS', emoji: '🎨' },
-  { name: 'JavaScript', emoji: '⚡' },
-  { name: 'PHP', emoji: '🐘' },
-  { name: 'Java', emoji: '☕' },
-  { name: 'SQL', emoji: '🗄️' },
-  { name: 'Figma', emoji: '✏️' },
-  { name: 'Adobe Animate', emoji: '🎬' },
-  { name: 'Photoshop', emoji: '🖼️' },
-  { name: 'Canva', emoji: '🖌️' },
-  { name: 'GitHub', emoji: '🐙' },
-  { name: 'WordPress', emoji: '📝' },
+const groups = [
+  {
+    title: 'Design',
+    skills: [
+      { name: 'Figma', icon: SiFigma },
+      { name: 'Photoshop', icon: TbBrandAdobePhotoshop },
+      { name: 'Adobe Animate', icon: TbBrandAdobe },
+      { name: 'Canva', icon: SiCanva },
+    ],
+  },
+  {
+    title: 'Development',
+    skills: [
+      { name: 'HTML', icon: SiHtml5 },
+      { name: 'CSS', icon: SiCss },
+      { name: 'JavaScript', icon: SiJavascript },
+      { name: 'PHP', icon: SiPhp },
+      { name: 'Java', icon: FaJava },
+      { name: 'SQL', icon: TbSql },
+    ],
+  },
+  {
+    title: 'Tools',
+    skills: [
+      { name: 'GitHub', icon: SiGithub },
+      { name: 'WordPress', icon: SiWordpress },
+    ],
+  },
 ]
 
 const Skills = () => {
   return (
-    <section id="skills" className="skills">
+    <section id="skills" className="section skills">
 
       {/* HEADER */}
-      <div className="skills-header">
-        <p className="skills-label">What I work with</p>
-        <h2 className="skills-heading">My Skills</h2>
-        <p className="skills-subtext">
+      <div className="section-header" data-reveal>
+        <p className="section-label"><span>02</span> Skills</p>
+        <h2 className="section-heading">What I <em>work with</em></h2>
+        <p className="section-sub">
           Tools and technologies I use to bring ideas to life.
         </p>
       </div>
 
-      {/* GRID */}
-      <div className="skills-grid">
-        {skills.map((skill, i) => (
-          <div
-            key={skill.name}
-            className="skill-card"
-            style={{ animationDelay: `${i * 0.06}s` }}
-          >
-            <span className="skill-emoji">{skill.emoji}</span>
-            <span className="skill-name">{skill.name}</span>
+      {/* GROUPS */}
+      <div className="skills-groups">
+        {groups.map((group) => (
+          <div key={group.title} className="skills-group" data-reveal>
+            <h3 className="skills-group-title">{group.title}</h3>
+            <div className="skills-grid">
+              {group.skills.map((skill) => {
+                const Icon = skill.icon
+                return (
+                  <div key={skill.name} className="skill-card">
+                    <Icon className="skill-icon" />
+                    <span className="skill-name">{skill.name}</span>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         ))}
       </div>

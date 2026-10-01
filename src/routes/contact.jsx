@@ -1,58 +1,82 @@
 import React from 'react'
 import { BsTelephone, BsEnvelope, BsInstagram, BsFacebook } from 'react-icons/bs'
+import { HiArrowUpRight, HiArrowUp } from 'react-icons/hi2'
+
+const EMAIL = 'btsxtxt27@gmail.com'
 
 const contacts = [
   {
-    icon: <BsTelephone />,
-    tooltip: '09636663007',
-  },
-    {
-    icon: <BsFacebook />,
-    tooltip: 'Alex Catequista',
-    href: 'https://www.facebook.com/bangtan.bangtan.bang.bangtan11/',
-  },
-    {
-    icon: <BsInstagram />,
-    tooltip: 'alxndra_ctquist',
-    href: 'https://www.instagram.com/alxndra_ctqist/',
+    icon: <BsEnvelope />,
+    label: 'Email',
+    value: EMAIL,
+    href: `mailto:${EMAIL}`,
   },
   {
-    icon: <BsEnvelope />,
-    tooltip: 'btsxtxt27@gmail.com',
+    icon: <BsTelephone />,
+    label: 'Phone',
+    value: '0963 666 3007',
+    href: 'tel:+639636663007',
+  },
+  {
+    icon: <BsFacebook />,
+    label: 'Facebook',
+    value: 'Alex Catequista',
+    href: 'https://www.facebook.com/bangtan.bangtan.bang.bangtan11/',
+  },
+  {
+    icon: <BsInstagram />,
+    label: 'Instagram',
+    value: '@alxndra_ctqist',
+    href: 'https://www.instagram.com/alxndra_ctqist/',
   },
 ]
 
 const Contact = () => {
   return (
-    <section id="contact" className="contact">
+    <section id="contact" className="section contact">
 
-      <div className="contact-header">
-        <p className="contact-label">Get in touch</p>
-        <h2 className="contact-heading">Contact Me</h2>
-        <div className="contact-icons">
-          {contacts.map((item, i) => (
-            
-              <a key={i}
+      <div className="contact-header" data-reveal>
+        <p className="section-label"><span>04</span> Contact</p>
+        <h2 className="contact-heading">
+          Let's make something <em>together.</em>
+        </h2>
+        <p className="section-sub">
+          Have a project, an opportunity, or just want to say hi? My inbox is open.
+        </p>
+        <a href={`mailto:${EMAIL}`} className="btn btn--primary btn--lg">
+          Say hello <HiArrowUpRight />
+        </a>
+      </div>
+
+      <div className="contact-grid" data-reveal>
+        {contacts.map((item) => {
+          const external = item.href.startsWith('http')
+          return (
+            <a
+              key={item.label}
               href={item.href}
-              target="_blank"
-              rel="noreferrer"
-              className="contact-icon-btn"
-              style={{ animationDelay: `${i * 0.12}s` }}
+              className="contact-card"
+              {...(external && { target: '_blank', rel: 'noreferrer' })}
             >
-              <span className="contact-icon">{item.icon}</span>
-              <span className="contact-tooltip">{item.tooltip}</span>
+              <span className="contact-card-icon">{item.icon}</span>
+              <span className="contact-card-text">
+                <span className="contact-card-label">{item.label}</span>
+                <span className="contact-card-value">{item.value}</span>
+              </span>
+              <HiArrowUpRight className="contact-card-arrow" />
             </a>
-          ))}
-        </div>
+          )
+        })}
       </div>
 
       <footer className="contact-footer">
         <p className="contact-copyright">
-          alyksanFR© 2025. All rights reserved. ✦ Western Institute of Technology ✦
+          © {new Date().getFullYear()} alyksanFR · Western Institute of Technology
         </p>
+        <a href="#home" className="contact-top-btn" aria-label="Back to top">
+          <HiArrowUp />
+        </a>
       </footer>
-
-      <a href="#home" className="contact-top-btn" aria-label="Back to top">↑</a>
 
     </section>
   )
