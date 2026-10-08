@@ -35,9 +35,9 @@ const About = () => {
 
       {/* IMAGE STACK */}
       <div className="about-img-wrapper" data-reveal>
-        <img src="im1.jpg" alt="" className="about-img back-img2" loading="lazy" />
-        <img src="im2.jpg" alt="" className="about-img back-img1" loading="lazy" />
-        <img src="image.jpg" alt="Portrait of Alex" className="about-img main-img" loading="lazy" />
+        <img src="/im1.jpg" alt="" className="about-img back-img2" loading="lazy" />
+        <img src="/im2.jpg" alt="" className="about-img back-img1" loading="lazy" />
+        <img src="/image.jpg" alt="Portrait of Alex" className="about-img main-img" loading="lazy" />
       </div>
 
     </section>
