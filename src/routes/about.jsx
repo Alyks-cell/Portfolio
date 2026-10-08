@@ -1,7 +1,7 @@
 import React from 'react'
 
 const facts = [
-  { label: 'Studying', value: 'BS Information Technology, 2nd year' },
+  { label: 'Studying', value: 'BS Information Technology, 3rd year' },
   { label: 'School', value: 'Western Institute of Technology' },
   { label: 'Focus', value: 'UI/UX design & web development' },
 ]
@@ -18,7 +18,7 @@ const About = () => {
         </h2>
 
         <p className="about-subtext">
-          I’m a second-year BSIT student at Western Institute of Technology
+          I’m a third-year BSIT student at Western Institute of Technology
           who enjoys turning ideas into creative digital projects.
           I’m always eager to learn new skills and improve in IT and design.
         </p>
@@ -37,7 +37,7 @@ const About = () => {
       <div className="about-img-wrapper" data-reveal>
         <img src="/im1.jpg" alt="" className="about-img back-img2" loading="lazy" />
         <img src="/im2.jpg" alt="" className="about-img back-img1" loading="lazy" />
-        <img src="/image.jpg" alt="Portrait of Alex" className="about-img main-img" loading="lazy" />
+        <img src="/asd.jpe" alt="Portrait of Alex" className="about-img main-img" loading="lazy" />
       </div>
 
     </section>

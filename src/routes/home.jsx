@@ -56,8 +56,7 @@ const Home = () => {
       </div>
 
       <div className="home-portrait" aria-label="Portrait">
-        <img src="/image.jpg" alt="Alex, information technology student and aspiring designer" />
-        <span className="home-stamp">DESIGN<br />WITH<br />PURPOSE</span>
+        <img src="asd.jpe" />
       </div>
 
       {/* cards */}
