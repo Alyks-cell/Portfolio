@@ -1,5 +1,5 @@
 import React from 'react'
-import { BsTelephone, BsEnvelope, BsInstagram, BsFacebook } from 'react-icons/bs'
+import { BsTelephone, BsEnvelope, BsGithub, BsInstagram, BsFacebook } from 'react-icons/bs'
 import { HiArrowUpRight, HiArrowUp } from 'react-icons/hi2'
 
 const EMAIL = 'btsxtxt27@gmail.com'
@@ -16,6 +16,12 @@ const contacts = [
     label: 'Phone',
     value: '0963 666 3007',
     href: 'tel:+639636663007',
+  },
+  {
+    icon: <BsGithub />,
+    label: 'GitHub',
+    value: 'Alyks-cell',
+    href: 'https://github.com/Alyks-cell',
   },
   {
     icon: <BsFacebook />,
@@ -43,7 +49,7 @@ const Contact = () => {
         <p className="section-sub">
           Have a project, an opportunity, or just want to say hi? My inbox is open.
         </p>
-        <a href={`mailto:${EMAIL}`} className="btn btn--primary btn--lg">
+        <a href={`mailto:${EMAIL}?subject=Hello%20from%20your%20portfolio`} className="btn btn--primary btn--lg">
           Say hello <HiArrowUpRight />
         </a>
       </div>
@@ -71,7 +77,7 @@ const Contact = () => {
 
       <footer className="contact-footer">
         <p className="contact-copyright">
-          © {new Date().getFullYear()} alyksanFR · Western Institute of Technology
+          &copy; {new Date().getFullYear()} Alex Catequista
         </p>
         <a href="#home" className="contact-top-btn" aria-label="Back to top">
           <HiArrowUp />

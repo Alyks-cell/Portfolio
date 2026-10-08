@@ -41,7 +41,7 @@ const Navbar = () => {
   return (
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <a href="#home" className="navbar-logo" onClick={() => setOpen(false)}>
-        <span className="navbar-title">alyksanFR</span>
+        <span className="navbar-title">Alex Catequista</span>
       </a>
 
       <button

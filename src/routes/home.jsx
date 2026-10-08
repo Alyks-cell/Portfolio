@@ -40,7 +40,7 @@ const Home = () => {
         </p>
 
         <h1 className="home-name">
-          Hi, I'm Alex!
+          Alex Catequista
           <span className="home-name-accent">UI/UX designer</span>
         </h1>
 
