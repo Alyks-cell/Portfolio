@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { HiBars3, HiXMark } from 'react-icons/hi2'
 
 const links = [
@@ -9,19 +9,20 @@ const links = [
   { id: 'contact', label: 'Contact' },
 ]
 
-const Navbar = () => {
+function Navbar() {
   const [active, setActive] = useState('home')
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
+    const handleScroll = () => setScrolled(window.scrollY > 24)
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Highlight the link for whichever section is in the middle of the screen
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -29,12 +30,14 @@ const Navbar = () => {
           if (entry.isIntersecting) setActive(entry.target.id)
         })
       },
-      { rootMargin: '-45% 0px -50% 0px' }
+      { rootMargin: '-45% 0px -50% 0px' },
     )
+
     links.forEach(({ id }) => {
       const section = document.getElementById(id)
       if (section) observer.observe(section)
     })
+
     return () => observer.disconnect()
   }, [])
 
@@ -46,7 +49,7 @@ const Navbar = () => {
 
       <button
         className="navbar-toggle"
-        onClick={() => setOpen(!open)}
+        onClick={() => setOpen((isOpen) => !isOpen)}
         aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
       >

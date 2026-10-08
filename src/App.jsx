@@ -1,13 +1,12 @@
 import { useEffect } from 'react'
-import Navbar from './components/Nav';
-import Home from './routes/home';
+import Navbar from './components/Nav'
+import Home from './routes/home'
 import About from './routes/about'
 import Skills from './routes/skills'
-import Project from './routes/project'
-import Contact from './routes/contact';
+import Projects from './routes/projects'
+import Contact from './routes/contact'
 
 function App() {
-  // Fade elements marked with data-reveal in as they scroll into view
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -18,9 +17,13 @@ function App() {
           }
         })
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     )
-    document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el))
+
+    document.querySelectorAll('[data-reveal]').forEach((element) => {
+      observer.observe(element)
+    })
+
     return () => observer.disconnect()
   }, [])
 
@@ -31,11 +34,11 @@ function App() {
         <Home />
         <About />
         <Skills />
-        <Project />
+        <Projects />
         <Contact />
       </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
