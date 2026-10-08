@@ -26,8 +26,7 @@ function Home() {
         </h1>
 
         <p className="home-intro">
-          I design interfaces and build them in code. Currently a BSIT student,
-          looking for internships in UI/UX and front-end work.
+          I design interfaces and build them in code. Currently a BSIT student.
         </p>
 
         <div className="home-buttons">
