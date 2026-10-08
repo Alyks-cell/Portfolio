@@ -1,36 +1,30 @@
 import React from 'react'
 import {
-  SiHtml5, SiCss, SiJavascript, SiPhp, SiFigma, SiCanva, SiGithub, SiWordpress,
-} from 'react-icons/si'
-import { FaJava } from 'react-icons/fa6'
-import { TbBrandAdobePhotoshop, TbBrandAdobe, TbSql } from 'react-icons/tb'
+  FaPenRuler, FaImage, FaFilm, FaPalette, FaCode,
+  FaDatabase, FaLaptopCode, FaServer, FaCodeBranch,
+} from 'react-icons/fa6'
 
 const groups = [
   {
     title: 'Design',
     skills: [
-      { name: 'Figma', icon: SiFigma },
-      { name: 'Photoshop', icon: TbBrandAdobePhotoshop },
-      { name: 'Adobe Animate', icon: TbBrandAdobe },
-      { name: 'Canva', icon: SiCanva },
+      { name: 'Figma', icon: FaPenRuler },
+      { name: 'Photoshop', icon: FaImage },
+      { name: 'Adobe Animate', icon: FaFilm },
+      { name: 'Canva', icon: FaPalette },
     ],
   },
   {
-    title: 'Development',
+    title: 'Development & tools',
     skills: [
-      { name: 'HTML', icon: SiHtml5 },
-      { name: 'CSS', icon: SiCss },
-      { name: 'JavaScript', icon: SiJavascript },
-      { name: 'PHP', icon: SiPhp },
-      { name: 'Java', icon: FaJava },
-      { name: 'SQL', icon: TbSql },
-    ],
-  },
-  {
-    title: 'Tools',
-    skills: [
-      { name: 'GitHub', icon: SiGithub },
-      { name: 'WordPress', icon: SiWordpress },
+      { name: 'HTML', icon: FaCode },
+      { name: 'CSS', icon: FaCode },
+      { name: 'JavaScript', icon: FaCode },
+      { name: 'PHP', icon: FaServer },
+      { name: 'Java', icon: FaLaptopCode },
+      { name: 'SQL', icon: FaDatabase },
+      { name: 'WordPress', icon: FaLaptopCode },
+      { name: 'GitHub', icon: FaCodeBranch },
     ],
   },
 ]
@@ -44,7 +38,7 @@ const Skills = () => {
         <p className="section-label"><span>02</span> Skills</p>
         <h2 className="section-heading">What I <em>work with</em></h2>
         <p className="section-sub">
-          Tools and technologies I use to bring ideas to life.
+          What I design in, and what I build with.
         </p>
       </div>
 

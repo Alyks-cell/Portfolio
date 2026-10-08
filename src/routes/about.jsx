@@ -1,9 +1,10 @@
 import React from 'react'
 
 const facts = [
-  { label: 'Studying', value: 'BS Information Technology, 3rd year' },
-  { label: 'School', value: 'Western Institute of Technology' },
-  { label: 'Focus', value: 'UI/UX design & web development' },
+  { label: 'Currently', value: 'Building Study Buddy; learning React' },
+  { label: 'Tools', value: 'Figma, React, Tailwind CSS' },
+  { label: 'Based in', value: 'Iloilo, Philippines' },
+  { label: 'Open to', value: 'Internships and freelance work' },
 ]
 
 const About = () => {
@@ -18,9 +19,9 @@ const About = () => {
         </h2>
 
         <p className="about-subtext">
-          I’m a third-year BSIT student at Western Institute of Technology
-          who enjoys turning ideas into creative digital projects.
-          I’m always eager to learn new skills and improve in IT and design.
+          I like figuring out how an interface can make a task feel simpler, then bringing that idea from Figma into code. 
+          I'm currently building Study Buddy and developing my skills. 
+          I'm looking for a work where I can contribute to useful digital products and learn from a team.
         </p>
 
         <dl className="about-facts">

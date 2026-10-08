@@ -40,13 +40,12 @@ const Home = () => {
         </p>
 
         <h1 className="home-name">
-          Hi, I'm Alex.
-          <span className="home-name-accent">UI/UX designer in progress.</span>
+          Hi, I'm Alex!
+          <span className="home-name-accent">UI/UX designer</span>
         </h1>
 
         <p className="home-intro">
-          I turn ideas into creative digital projects, from Figma prototypes
-          to full-stack web apps.
+          I design interfaces and build them in code. Currently a BSIT student, looking for internships in UI/UX and front-end work.
         </p>
 
         <div className="home-buttons">
