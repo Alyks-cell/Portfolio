@@ -74,10 +74,6 @@ function Navbar() {
               </a>
             ))}
           </nav>
-
-          <a href="#contact" className="navbar-cta">
-            Contact
-          </a>
         </div>
         <span className="navbar-progress" aria-hidden="true" />
       </header>

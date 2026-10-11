@@ -173,10 +173,6 @@ button:focus-visible {
   transform-origin: left;
 }
 
-.navbar-cta {
-  display: none;
-}
-
 .bottom-nav {
   display: none;
 }
@@ -1162,20 +1158,6 @@ button:focus-visible {
     display: none;
   }
 
-  .navbar-cta {
-    display: inline-block;
-    padding: 6px 14px;
-    border: 1.5px solid var(--accent);
-    border-radius: 999px;
-    color: var(--accent);
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  .navbar-cta:active {
-    background: var(--accent-soft);
-  }
-
   .bottom-nav {
     position: fixed;
     z-index: 60;
@@ -1229,13 +1211,32 @@ button:focus-visible {
 
   .home {
     min-height: 0;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto;
+    align-items: center;
     padding: 32px 16px 56px;
-    gap: 32px;
+    gap: 24px 16px;
   }
 
   .home-content {
-    text-align: center;
+    display: contents;
+  }
+
+  .home-name {
+    grid-column: 1;
+    grid-row: 1;
+    margin-bottom: 0;
+  }
+
+  .home-intro,
+  .home-buttons,
+  .home-meta {
+    grid-column: 1 / -1;
+  }
+
+  .home-intro,
+  .home-meta {
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   .hero-dipper {
@@ -1251,8 +1252,6 @@ button:focus-visible {
   }
 
   .home-intro {
-    margin-right: auto;
-    margin-left: auto;
     font-size: 16px;
   }
 
@@ -1262,8 +1261,7 @@ button:focus-visible {
   }
 
   .home-meta {
-    justify-content: center;
-    margin-top: 28px;
+    padding-top: 16px;
   }
 
   .status-branch,
@@ -1279,6 +1277,10 @@ button:focus-visible {
     display: none;
   }
 
+  .status-bar {
+    margin-top: 32px;
+  }
+
   .status-item {
     padding: 7px 8px;
   }
@@ -1288,12 +1290,19 @@ button:focus-visible {
   }
 
   .home-photo {
-    max-width: 210px;
-    order: -1;
+    grid-column: 2;
+    grid-row: 1;
+    width: 112px;
+    margin-right: 8px;
   }
 
   .home-photo::before {
-    inset: 12px -12px -12px 12px;
+    inset: 8px -8px -8px 8px;
+    border-radius: 12px;
+  }
+
+  .home-photo img {
+    border-radius: 12px;
   }
 
   .about-inner,
