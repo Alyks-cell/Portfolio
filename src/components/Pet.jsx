@@ -56,27 +56,29 @@ const phrases = [
   'Soooo Tireddddd',
 ]
 
-const SLEEP_AFTER = 10000
+const SLEEP_AFTER = 12000
+const TELEPORT_TIME = 600
+const WALK_SPEED = 0.05
 
 const perches = [
-  { section: 'home', selector: '.status-bar', side: 'left', say: 'Hi there!' },
-  { section: 'about', selector: '.about-details', side: 'right', say: "that's my human!" },
-  { section: 'skills', selector: '.skills-group', side: 'right', say: 'so many skills ✦' },
-  { section: 'projects', selector: '.project-card', side: 'right', say: 'ooh, projects!' },
-  { section: 'certificates', selector: '.cert-filters, .cert-timeline', side: 'right', say: 'my human is certified ✦' },
-  { section: 'contact', selector: '.contact-links', side: 'right', say: 'say hi to my human!' },
+  { section: 'home', selector: '.status-bar', walk: true, say: 'Hi there!' },
+  { section: 'about', selector: '.about-details', say: "that's my human!" },
+  { section: 'skills', selector: '.skills-group', say: 'so many skills ✦' },
+  { section: 'projects', selector: '.project-card', say: 'ooh, projects!' },
+  { section: 'certificates', selector: '.cert-filters, .cert-timeline', say: 'my human is certified ✦' },
+  { section: 'contact', selector: '.contact-links', say: 'say hi to my human!' },
 ]
 
 const startState = {
-  x: 24,
+  x: 0,
   y: 0,
   dir: 1,
+  phase: 'hidden',
   mood: 'idle',
-  until: 0,
+  happyUntil: 0,
   walked: 0,
   blink: false,
-  placed: false,
-  away: true,
+  teleportId: 0,
 }
 
 const random = (min, max) => min + Math.random() * (max - min)
@@ -84,7 +86,6 @@ const random = (min, max) => min + Math.random() * (max - min)
 const bottomSpace = () => (window.innerWidth <= 700 ? 76 : 8)
 
 function clampToScreen(x, y) {
-
   return {
     x: Math.min(Math.max(x, 4), window.innerWidth - SIZE - 4),
     y: Math.min(Math.max(y, 4), window.innerHeight - SIZE - bottomSpace()),
@@ -108,7 +109,10 @@ function findPerch() {
   return {
     section: perch.section,
     say: perch.say,
-    x: perch.side === 'left' ? box.left + 40 : box.right - SIZE - 32,
+    walk: Boolean(perch.walk),
+    x: box.right - SIZE - 32,
+    minX: box.left + 8,
+    maxX: box.right - SIZE - 8,
     y,
     onScreen: y >= 0 && y + SIZE <= window.innerHeight - bottomSpace(),
   }
@@ -159,10 +163,12 @@ function Pet() {
   const dragRef = useRef(null)
   const justDraggedRef = useRef(false)
   const pauseUntilRef = useRef(0)
+  const phaseEndRef = useRef(0)
   const lastActiveRef = useRef(0)
   const sectionRef = useRef(null)
-  const attachedRef = useRef(false)
   const sayRef = useRef(null)
+  const homeOffsetRef = useRef(32)
+  const wanderRef = useRef({ walking: false, until: 0 })
   const nextBlinkRef = useRef(0)
   const blinkUntilRef = useRef(0)
   const bubbleTimerRef = useRef(null)
@@ -186,6 +192,13 @@ function Pet() {
     let frame
     let lastTime = performance.now()
 
+    const spotOf = (perch) => {
+      if (!perch.walk) return { x: perch.x, y: perch.y }
+      const range = Math.max(0, perch.maxX - perch.minX)
+      homeOffsetRef.current = Math.min(Math.max(homeOffsetRef.current, 0), range)
+      return { x: perch.minX + homeOffsetRef.current, y: perch.y }
+    }
+
     const loop = (time) => {
       const delta = Math.max(0, Math.min(time - lastTime, 50))
       lastTime = time
@@ -195,75 +208,96 @@ function Pet() {
       let state = previous
       const perch = findPerch()
 
-      if (perch && !state.placed) {
-        state = { ...state, ...clampToScreen(perch.x, perch.y), placed: true }
+      const startPhase = (phase, changes = {}) => {
+        phaseEndRef.current = now + (reduceMotion ? 0 : TELEPORT_TIME)
+        state = { ...state, ...changes, phase, teleportId: state.teleportId + 1 }
       }
 
       if (perch && perch.section !== sectionRef.current) {
         sectionRef.current = perch.section
-        attachedRef.current = false
         sayRef.current = perch.say
         lastActiveRef.current = now
+
+        if (state.phase === 'sitting') startPhase('out')
+        else if (state.phase === 'in') state = { ...state, phase: 'hidden' }
       }
 
-      const goal = perch ? clampToScreen(perch.x, perch.y) : null
-      const dx = goal ? goal.x - state.x : 0
-      const dy = goal ? goal.y - state.y : 0
-      const distance = Math.hypot(dx, dy)
-      const resting = now - lastActiveRef.current > SLEEP_AFTER ? 'sleep' : 'idle'
+      switch (state.phase) {
+        case 'out':
+          if (now >= phaseEndRef.current) state = { ...state, phase: 'hidden' }
+          break
 
-      const away = perch && !perch.onScreen && !dragRef.current?.moved
+        case 'hidden':
+          if (perch?.onScreen) startPhase('in', { ...spotOf(perch), mood: 'idle' })
+          break
 
-      if (dragRef.current?.moved) {
-        state = { ...state, mood: 'held' }
-      } else if (away) {
-        attachedRef.current = true
-        state = { ...state, ...goal, mood: resting }
-      } else if (state.mood === 'happy' && now < state.until) {
-        state = { ...state, mood: 'happy' }
-      } else if (!goal || now < pauseUntilRef.current) {
-        state = { ...state, mood: resting }
-      } else if (attachedRef.current) {
-        state = { ...state, ...goal, mood: resting }
-        if (sayRef.current) {
-          showBubble(sayRef.current)
-          sayRef.current = null
-        }
-      } else {
-        const step = Math.max(0.14, distance / 700) * delta
-
-        if (reduceMotion || step >= distance) {
-          attachedRef.current = true
-          state = { ...state, ...goal, mood: 'idle' }
-          if (sayRef.current) {
-            showBubble(sayRef.current)
-            sayRef.current = null
+        case 'in':
+          if (perch) state = { ...state, ...spotOf(perch) }
+          if (now >= phaseEndRef.current) {
+            state = { ...state, phase: 'sitting' }
+            if (sayRef.current) {
+              showBubble(sayRef.current)
+              sayRef.current = null
+            }
           }
-        } else {
-          state = {
-            ...state,
-            x: state.x + (dx / distance) * step,
-            y: state.y + (dy / distance) * step,
-            dir: Math.abs(dx) > 2 ? Math.sign(dx) : state.dir,
-            mood: 'walk',
-            walked: state.walked + delta,
+          break
+
+        case 'dropped':
+          state = { ...state, mood: now < state.happyUntil ? 'happy' : 'idle' }
+          if (now >= pauseUntilRef.current) startPhase('out')
+          break
+
+        case 'sitting': {
+          if (!perch?.onScreen) {
+            state = { ...state, phase: 'hidden' }
+            break
           }
+
+          const inactive = now - lastActiveRef.current
+          let mood = inactive > SLEEP_AFTER ? 'sleep' : 'idle'
+
+          if (now < state.happyUntil) {
+            mood = 'happy'
+          } else if (perch.walk && !reduceMotion && inactive < 30000) {
+            const wander = wanderRef.current
+            if (now > wander.until) {
+              wander.walking = Math.random() < 0.6
+              wander.until = now + (wander.walking ? random(2000, 5000) : random(1500, 3500))
+              if (Math.random() < 0.35) state = { ...state, dir: -state.dir }
+            }
+
+            mood = 'idle'
+            if (wander.walking) {
+              const range = Math.max(0, perch.maxX - perch.minX)
+              let offset = homeOffsetRef.current + state.dir * WALK_SPEED * delta
+              let dir = state.dir
+
+              if (offset <= 0 || offset >= range) {
+                offset = Math.min(Math.max(offset, 0), range)
+                dir = -dir
+              }
+              homeOffsetRef.current = offset
+              state = { ...state, dir, walked: state.walked + delta }
+              mood = 'walk'
+            }
+          }
+
+          state = { ...state, ...spotOf(perch), mood }
+          break
         }
+
+        default:
+          break
       }
 
       if (now > nextBlinkRef.current) {
         blinkUntilRef.current = now + 130
         nextBlinkRef.current = now + random(2500, 5000)
       }
-      state = {
-        ...state,
-        ...clampToScreen(state.x, state.y),
-        blink: now < blinkUntilRef.current,
-        away: Boolean(away),
-      }
+      state = { ...state, blink: now < blinkUntilRef.current }
 
       simRef.current = state
-      const changed = ['x', 'y', 'dir', 'mood', 'blink', 'placed', 'away'].some(
+      const changed = ['x', 'y', 'dir', 'mood', 'blink', 'phase', 'teleportId', 'walked'].some(
         (key) => state[key] !== previous[key],
       )
       if (changed) setView(state)
@@ -278,7 +312,7 @@ function Pet() {
   const celebrate = () => {
     const now = Date.now()
     lastActiveRef.current = now
-    update({ mood: 'happy', until: now + 1400 })
+    update({ happyUntil: now + 1400, mood: 'happy' })
     showBubble(phrases[Math.floor(Math.random() * phrases.length)])
 
     const burst = Array.from({ length: 6 }, (_, index) => ({
@@ -318,6 +352,7 @@ function Pet() {
     }
     update({
       ...clampToScreen(event.clientX - drag.offsetX, event.clientY - drag.offsetY),
+      phase: 'held',
       mood: 'held',
     })
   }
@@ -329,10 +364,9 @@ function Pet() {
 
     const now = Date.now()
     justDraggedRef.current = true
-    attachedRef.current = false
     lastActiveRef.current = now
-    pauseUntilRef.current = now + 4000
-    update({ mood: 'idle' })
+    pauseUntilRef.current = now + 3000
+    update({ phase: 'dropped', mood: 'idle' })
     showBubble('again! again!', 1200)
   }
 
@@ -344,6 +378,8 @@ function Pet() {
     celebrate()
   }
 
+  const teleporting = view.phase === 'out' || view.phase === 'in'
+
   let face = eyes.open
   if (view.mood === 'happy' || view.mood === 'held') face = eyes.happy
   else if (view.mood === 'sleep' || view.blink) face = eyes.closed
@@ -353,12 +389,23 @@ function Pet() {
 
   return (
     <div className="pet-layer">
+      {teleporting && (
+        <span
+          key={view.teleportId}
+          className="pet-portal"
+          style={{ left: view.x + SIZE / 2, top: view.y + SIZE - 3 }}
+          aria-hidden="true"
+        >
+          <span className="pet-portal-disc" />
+        </span>
+      )}
+
       <button
         type="button"
-        className={`pet pet--${view.mood} ${view.away ? 'pet--away' : ''}`}
+        className={`pet pet--${view.mood} ${teleporting ? `pet--${view.phase}` : ''}`}
         style={{
           transform: `translate(${view.x}px, ${view.y}px)`,
-          visibility: view.placed ? 'visible' : 'hidden',
+          visibility: view.phase === 'hidden' ? 'hidden' : 'visible',
         }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}

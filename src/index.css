@@ -506,13 +506,70 @@ button:focus-visible {
   cursor: grabbing;
 }
 
-.pet {
-  transition: opacity 0.3s;
+.pet-portal {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  pointer-events: none;
+  transform: scaleY(0.28);
 }
 
-.pet--away {
+.pet-portal-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0 10%, #e3d9ff 22%, #9b7dff 44%, #5b44d6 58%, rgba(91, 68, 214, 0) 70%);
+  box-shadow: 0 0 18px 6px rgba(155, 125, 255, 0.45);
+  animation: portal-open 0.6s ease both;
+}
+
+.pet-portal-disc::before {
+  position: absolute;
+  inset: 6px;
+  border: 2px dashed rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  content: '';
+  animation: portal-spin 0.9s linear infinite;
+}
+
+.pet.pet--out .pet-body svg {
+  transform-origin: 50% 100%;
+  animation: pet-sink 0.6s ease-in forwards;
+}
+
+.pet.pet--in .pet-body svg {
+  transform-origin: 50% 100%;
+  animation: pet-rise 0.6s ease-out both;
+}
+
+.pet--out .pet-shadow,
+.pet--in .pet-shadow,
+.pet--out .pet-name,
+.pet--in .pet-name {
   opacity: 0;
-  pointer-events: none;
+}
+
+@keyframes portal-open {
+  0% { opacity: 0; transform: scale(0); }
+  20%, 80% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0); }
+}
+
+@keyframes portal-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pet-sink {
+  0% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
+  25% { opacity: 1; transform: translateY(-6px) scale(1.05) rotate(0); }
+  85%, 100% { opacity: 0; transform: translateY(14px) scale(0.1) rotate(200deg); }
+}
+
+@keyframes pet-rise {
+  0%, 15% { opacity: 0; transform: translateY(14px) scale(0.1) rotate(-200deg); }
+  70% { opacity: 1; transform: translateY(-8px) scale(1.08) rotate(0); }
+  100% { opacity: 1; transform: none; }
 }
 
 .pet-body {
@@ -1648,6 +1705,8 @@ button:focus-visible {
   .status-cursor,
   .hero-shooting,
   .pet *,
+  .pet-portal *,
+  .pet-portal *::before,
   .sky *,
   .constellation * {
     animation: none;

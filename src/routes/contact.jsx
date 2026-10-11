@@ -68,7 +68,7 @@ function Contact() {
 
       <footer className="footer">
         <div className="container footer-inner">
-          <p>&copy; {new Date().getFullYear()} Alex Catequista · Built with React</p>
+          <p>&copy; {new Date().getFullYear()} Alex Catequista </p>
           <a href="#home">Back to top &uarr;</a>
         </div>
       </footer>
