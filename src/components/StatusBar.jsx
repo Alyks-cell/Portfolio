@@ -79,7 +79,7 @@ function StatusBar() {
       </span>
 
       <span className="status-item status-time">
-        <HiOutlineClock aria-hidden="true" /> Iloilo, {time}
+        <HiOutlineClock aria-hidden="true" /> <span className="status-place">Iloilo,</span> {time}
       </span>
     </div>
   )

@@ -134,7 +134,7 @@ export function HeroSky() {
         </g>
       ))}
 
-      <g transform="translate(408 256) scale(1.6)">
+      <g className="hero-dipper" transform="translate(408 256) scale(1.6)">
         <path
           className="sky-line"
           d={dipperPath}

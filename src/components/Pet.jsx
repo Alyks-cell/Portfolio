@@ -75,16 +75,18 @@ const startState = {
   walked: 0,
   blink: false,
   placed: false,
+  away: true,
 }
 
 const random = (min, max) => min + Math.random() * (max - min)
 
+const bottomSpace = () => (window.innerWidth <= 700 ? 76 : 8)
+
 function clampToScreen(x, y) {
-  const bottomSpace = window.innerWidth <= 700 ? 76 : 8
 
   return {
     x: Math.min(Math.max(x, 4), window.innerWidth - SIZE - 4),
-    y: Math.min(Math.max(y, 4), window.innerHeight - SIZE - bottomSpace),
+    y: Math.min(Math.max(y, 4), window.innerHeight - SIZE - bottomSpace()),
   }
 }
 
@@ -100,11 +102,14 @@ function findPerch() {
   const box = document.querySelector(perch.selector)?.getBoundingClientRect()
   if (!box) return null
 
+  const y = box.top - SIZE + 3
+
   return {
     section: perch.section,
     say: perch.say,
     x: perch.side === 'left' ? box.left + 40 : box.right - SIZE - 32,
-    y: box.top - SIZE + 3,
+    y,
+    onScreen: y >= 0 && y + SIZE <= window.innerHeight - bottomSpace(),
   }
 }
 
@@ -206,14 +211,24 @@ function Pet() {
       const distance = Math.hypot(dx, dy)
       const resting = now - lastActiveRef.current > SLEEP_AFTER ? 'sleep' : 'idle'
 
+      const away =
+        window.innerWidth <= 700 && perch && !perch.onScreen && !dragRef.current?.moved
+
       if (dragRef.current?.moved) {
         state = { ...state, mood: 'held' }
+      } else if (away) {
+        attachedRef.current = true
+        state = { ...state, ...goal, mood: resting }
       } else if (state.mood === 'happy' && now < state.until) {
         state = { ...state, mood: 'happy' }
       } else if (!goal || now < pauseUntilRef.current) {
         state = { ...state, mood: resting }
       } else if (attachedRef.current) {
         state = { ...state, ...goal, mood: resting }
+        if (sayRef.current) {
+          showBubble(sayRef.current)
+          sayRef.current = null
+        }
       } else {
         const step = Math.max(0.14, distance / 700) * delta
 
@@ -244,10 +259,11 @@ function Pet() {
         ...state,
         ...clampToScreen(state.x, state.y),
         blink: now < blinkUntilRef.current,
+        away: Boolean(away),
       }
 
       simRef.current = state
-      const changed = ['x', 'y', 'dir', 'mood', 'blink', 'placed'].some(
+      const changed = ['x', 'y', 'dir', 'mood', 'blink', 'placed', 'away'].some(
         (key) => state[key] !== previous[key],
       )
       if (changed) setView(state)
@@ -339,7 +355,7 @@ function Pet() {
     <div className="pet-layer">
       <button
         type="button"
-        className={`pet pet--${view.mood}`}
+        className={`pet pet--${view.mood} ${view.away ? 'pet--away' : ''}`}
         style={{
           transform: `translate(${view.x}px, ${view.y}px)`,
           visibility: view.placed ? 'visible' : 'hidden',
