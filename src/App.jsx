@@ -5,6 +5,7 @@ import Home from './routes/home'
 import About from './routes/about'
 import Skills from './routes/skills'
 import Projects from './routes/projects'
+import Certificates from './routes/certificates'
 import Contact from './routes/contact'
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
         <About />
         <Skills />
         <Projects />
+        <Certificates />
         <Contact />
       </main>
       <Pet />

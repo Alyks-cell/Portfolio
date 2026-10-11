@@ -1,30 +1,26 @@
-import { createElement } from 'react'
-import {
-  BsEnvelope,
-  BsGithub,
-  BsTelephone,
-} from 'react-icons/bs'
+import { HiArrowUpRight } from 'react-icons/hi2'
 import StarrySky, { Constellation } from '../components/StarrySky'
 import { email, github } from '../links'
 
 const contacts = [
   {
-    icon: BsEnvelope,
     label: 'Email',
     value: email,
+    action: 'Send an email',
     href: `mailto:${email}`,
   },
   {
-    icon: BsTelephone,
     label: 'Phone',
     value: '0963 666 3007',
+    action: 'Call',
     href: 'tel:+639636663007',
   },
   {
-    icon: BsGithub,
     label: 'GitHub',
     value: 'github.com/Alyks-cell',
+    action: 'Open GitHub',
     href: github,
+    external: true,
   },
 ]
 
@@ -33,36 +29,35 @@ function Contact() {
     <>
       <section id="contact" className="section contact">
         <StarrySky />
-        <div className="container contact-inner">
-          <div className="contact-text" data-reveal>
-            <h2 className="section-title">Get in Touch</h2>
-            <p className="section-desc">
-              Feel free
-              to send me a message if you'd like to work together or have any
-              questions.
-            </p>
-            <a href={`mailto:${email}`} className="btn btn--primary">
-              Send me an email
-            </a>
+        <div className="container">
+          <div className="contact-header" data-reveal>
+            <div>
+              <h2 className="section-title">Get in Touch</h2>
+              <p className="section-desc">
+                Feel free to send me a message if you'd like to work together or
+                have any questions.
+              </p>
+            </div>
             <Constellation />
           </div>
 
-          <ul className="contact-list" data-reveal>
-            {contacts.map(({ icon, label, value, href }) => {
-              const external = href.startsWith('http')
+          <ul className="contact-links" data-reveal>
+            {contacts.map(({ label, value, action, href, external }) => {
+              const linkProps = external ? { target: '_blank', rel: 'noreferrer' } : {}
 
               return (
                 <li key={label}>
+                  <span className="contact-label">{label}</span>
+                  <a href={href} className="contact-value" {...linkProps}>
+                    {value}
+                  </a>
                   <a
                     href={href}
-                    className="contact-item"
-                    {...(external && { target: '_blank', rel: 'noreferrer' })}
+                    className="contact-arrow"
+                    aria-label={`${action}: ${value}`}
+                    {...linkProps}
                   >
-                    <span className="contact-icon">
-                      {createElement(icon, { 'aria-hidden': true })}
-                    </span>
-                    <span className="contact-label">{label}</span>
-                    <span className="contact-value">{value}</span>
+                    <HiArrowUpRight aria-hidden="true" />
                   </a>
                 </li>
               )
@@ -73,7 +68,7 @@ function Contact() {
 
       <footer className="footer">
         <div className="container footer-inner">
-          <p>&copy; {new Date().getFullYear()} Alex Catequista</p>
+          <p>&copy; {new Date().getFullYear()} Alex Catequista · Built with React</p>
           <a href="#home">Back to top &uarr;</a>
         </div>
       </footer>

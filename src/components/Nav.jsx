@@ -1,5 +1,6 @@
 import { createElement, useEffect, useRef, useState } from 'react'
 import {
+  HiOutlineAcademicCap,
   HiOutlineChatBubbleLeftRight,
   HiOutlineFolder,
   HiOutlineHome,
@@ -12,6 +13,7 @@ const links = [
   { id: 'about', label: 'About', icon: HiOutlineUser },
   { id: 'skills', label: 'Skills', icon: HiOutlineWrenchScrewdriver },
   { id: 'projects', label: 'Projects', icon: HiOutlineFolder },
+  { id: 'certificates', label: 'Certificates', short: 'Certs', icon: HiOutlineAcademicCap },
   { id: 'contact', label: 'Contact', icon: HiOutlineChatBubbleLeftRight },
 ]
 
@@ -20,37 +22,30 @@ function Navbar() {
   const headerRef = useRef(null)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id)
-        })
-      },
-      { rootMargin: '-45% 0px -50% 0px' },
-    )
-
-    links.forEach(({ id }) => {
-      const section = document.getElementById(id)
-      if (section) observer.observe(section)
-    })
-
-    return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    const updateProgress = () => {
+    const update = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight
       const progress = max > 0 ? window.scrollY / max : 0
       headerRef.current?.style.setProperty('--progress', progress.toFixed(4))
+
+      const middle = window.innerHeight / 2
+      let current = links[0].id
+      links.forEach(({ id }) => {
+        const top = document.getElementById(id)?.getBoundingClientRect().top
+        if (top !== undefined && top <= middle) current = id
+      })
+      if (max > 0 && window.scrollY >= max - 2) current = links[links.length - 1].id
+
+      setActive(current)
     }
 
-    updateProgress()
-    window.addEventListener('scroll', updateProgress, { passive: true })
-    window.addEventListener('resize', updateProgress)
+    const frame = requestAnimationFrame(update)
+    window.addEventListener('scroll', update, { passive: true })
+    window.addEventListener('resize', update)
 
     return () => {
-      window.removeEventListener('scroll', updateProgress)
-      window.removeEventListener('resize', updateProgress)
+      cancelAnimationFrame(frame)
+      window.removeEventListener('scroll', update)
+      window.removeEventListener('resize', update)
     }
   }, [])
 
@@ -79,7 +74,7 @@ function Navbar() {
       </header>
 
       <nav className="bottom-nav" aria-label="Main">
-        {links.map(({ id, label, icon }) => (
+        {links.map(({ id, label, short, icon }) => (
           <a
             key={id}
             href={`#${id}`}
@@ -89,7 +84,7 @@ function Navbar() {
             <span className="bottom-nav-icon">
               {createElement(icon, { 'aria-hidden': true })}
             </span>
-            {label}
+            {short ?? label}
           </a>
         ))}
       </nav>

@@ -63,7 +63,8 @@ const perches = [
   { section: 'about', selector: '.about-details', side: 'right', say: "that's my human!" },
   { section: 'skills', selector: '.skills-group', side: 'right', say: 'so many skills ✦' },
   { section: 'projects', selector: '.project-card', side: 'right', say: 'ooh, projects!' },
-  { section: 'contact', selector: '.contact-list', side: 'right', say: 'say hi to my human!' },
+  { section: 'certificates', selector: '.cert-filters, .cert-timeline', side: 'right', say: 'my human is certified ✦' },
+  { section: 'contact', selector: '.contact-links', side: 'right', say: 'say hi to my human!' },
 ]
 
 const startState = {
@@ -211,8 +212,7 @@ function Pet() {
       const distance = Math.hypot(dx, dy)
       const resting = now - lastActiveRef.current > SLEEP_AFTER ? 'sleep' : 'idle'
 
-      const away =
-        window.innerWidth <= 700 && perch && !perch.onScreen && !dragRef.current?.moved
+      const away = perch && !perch.onScreen && !dragRef.current?.moved
 
       if (dragRef.current?.moved) {
         state = { ...state, mood: 'held' }
