@@ -1,57 +1,43 @@
-const facts = [
-  { label: 'Currently', value: 'Building Study Buddy; learning React' },
-  { label: 'Tools', value: 'Figma, React, Tailwind CSS' },
-  { label: 'Based in', value: 'Iloilo, Philippines' },
-  { label: 'Open to', value: 'Internships and freelance work' },
+const details = [
+  { label: 'School', value: 'Western Institute of Technology' },
+  { label: 'Course', value: 'BS Information Technology, 3rd Year' },
+  { label: 'Location', value: 'Iloilo City, Philippines' },
+  { label: 'Looking for', value: '' },
 ]
 
 function About() {
   return (
     <section id="about" className="section about">
-      <div className="about-text" data-reveal>
-        <p className="section-label">
-          <span>01</span> About
-        </p>
-        <h2 className="section-heading">
-          A little <em>about me</em>
-        </h2>
+      <div className="container about-inner">
+        <div className="about-photo" data-reveal>
+          <img src="/im1.jpg" alt="Alex Catequista" loading="lazy" />
+        </div>
 
-        <p className="about-subtext">
-          I like figuring out how an interface can make a task feel simpler,
-          then bringing that idea from Figma into code. I'm currently building
-          Study Buddy and developing my skills. I'm looking for work where I can
-          contribute to useful digital products and learn from a team.
-        </p>
+        <div className="about-text" data-reveal>
+          <h2 className="section-title">About Me</h2>
 
-        <dl className="about-facts">
-          {facts.map(({ label, value }) => (
-            <div key={label} className="about-fact">
-              <dt>{label}</dt>
-              <dd>{value}</dd>
-            </div>
-          ))}
-        </dl>
-      </div>
+          <p>
+            I'm a 3rd year BSIT student who got into design because I wanted
+            the apps we build in class to look and feel better to use. Since
+            then I've been learning how to plan screens in Figma and build them
+            with HTML, CSS, JavaScript, and React.
+          </p>
+          <p>
+            Most of my projects started as school requirements, but I try to
+            treat each one like a real product. I'm currently working on Study
+            Buddy, a study tool that uses a rule-based expert system, and
+            learning more about React and the MERN stack.
+          </p>
 
-      <div className="about-img-wrapper" data-reveal>
-        <img
-          src="/im1.jpg"
-          alt=""
-          className="about-img back-img2"
-          loading="lazy"
-        />
-        <img
-          src="/im2.jpg"
-          alt=""
-          className="about-img back-img1"
-          loading="lazy"
-        />
-        <img
-          src="/asd.jpe"
-          alt="Portrait of Alex Catequista"
-          className="about-img main-img"
-          loading="lazy"
-        />
+          <dl className="about-details">
+            {details.filter(({ value }) => value).map(({ label, value }) => (
+              <div key={label} className="about-detail">
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </div>
     </section>
   )

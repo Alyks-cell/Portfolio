@@ -6,9 +6,7 @@ import {
   BsInstagram,
   BsTelephone,
 } from 'react-icons/bs'
-import { HiArrowUp, HiArrowUpRight } from 'react-icons/hi2'
-
-const email = 'btsxtxt27@gmail.com'
+import { email, github } from '../links'
 
 const contacts = [
   {
@@ -26,8 +24,8 @@ const contacts = [
   {
     icon: BsGithub,
     label: 'GitHub',
-    value: 'Alyks-cell',
-    href: 'https://github.com/Alyks-cell',
+    value: 'github.com/Alyks-cell',
+    href: github,
   },
   {
     icon: BsFacebook,
@@ -45,62 +43,52 @@ const contacts = [
 
 function Contact() {
   return (
-    <section id="contact" className="section contact">
-      <div className="contact-header" data-reveal>
-        <p className="section-label">
-          <span>04</span> Contact
-        </p>
-        <h2 className="contact-heading">
-          Let's make something <em>together.</em>
-        </h2>
-        <p className="section-sub">
-          Have a project, an opportunity, or just want to say hi? My inbox is
-          open.
-        </p>
-        <a
-          href={`mailto:${email}?subject=Hello%20from%20your%20portfolio`}
-          className="btn btn--primary btn--lg"
-        >
-          Say hello <HiArrowUpRight aria-hidden="true" />
-        </a>
-      </div>
-
-      <div className="contact-grid" data-reveal>
-        {contacts.map(({ icon, label, value, href }) => {
-          const external = href.startsWith('http')
-
-          return (
-            <a
-              key={label}
-              href={href}
-              className="contact-card"
-              {...(external && { target: '_blank', rel: 'noreferrer' })}
-            >
-              <span className="contact-card-icon">
-                {createElement(icon, { 'aria-hidden': true })}
-              </span>
-              <span className="contact-card-text">
-                <span className="contact-card-label">{label}</span>
-                <span className="contact-card-value">{value}</span>
-              </span>
-              <HiArrowUpRight
-                className="contact-card-arrow"
-                aria-hidden="true"
-              />
+    <>
+      <section id="contact" className="section contact">
+        <div className="container contact-inner">
+          <div className="contact-text" data-reveal>
+            <h2 className="section-title">Get in Touch</h2>
+            <p className="section-desc">
+              I'm currently looking for OJT/internship opportunities. Feel free
+              to send me a message if you'd like to work together or have any
+              questions.
+            </p>
+            <a href={`mailto:${email}`} className="btn btn--primary">
+              Send me an email
             </a>
-          )
-        })}
-      </div>
+          </div>
 
-      <footer className="contact-footer">
-        <p className="contact-copyright">
-          &copy; {new Date().getFullYear()} Alex Catequista
-        </p>
-        <a href="#home" className="contact-top-btn" aria-label="Back to top">
-          <HiArrowUp aria-hidden="true" />
-        </a>
+          <ul className="contact-list" data-reveal>
+            {contacts.map(({ icon, label, value, href }) => {
+              const external = href.startsWith('http')
+
+              return (
+                <li key={label}>
+                  <a
+                    href={href}
+                    className="contact-item"
+                    {...(external && { target: '_blank', rel: 'noreferrer' })}
+                  >
+                    <span className="contact-icon">
+                      {createElement(icon, { 'aria-hidden': true })}
+                    </span>
+                    <span className="contact-label">{label}</span>
+                    <span className="contact-value">{value}</span>
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </section>
+
+      <footer className="footer">
+        <div className="container footer-inner">
+          <p>&copy; {new Date().getFullYear()} Alex Catequista</p>
+          <a href="#home">Back to top &uarr;</a>
+        </div>
       </footer>
-    </section>
+    </>
   )
 }
 

@@ -11,17 +11,7 @@ const links = [
 
 function Navbar() {
   const [active, setActive] = useState('home')
-  const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 24)
-
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -42,32 +32,34 @@ function Navbar() {
   }, [])
 
   return (
-    <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
-      <a href="#home" className="navbar-logo" onClick={() => setOpen(false)}>
-        <span className="navbar-title">Alex Catequista</span>
-      </a>
+    <header className="navbar">
+      <div className="navbar-inner">
+        <a href="#home" className="navbar-logo" onClick={() => setOpen(false)}>
+          Alex Catequista
+        </a>
 
-      <button
-        className="navbar-toggle"
-        onClick={() => setOpen((isOpen) => !isOpen)}
-        aria-label={open ? 'Close menu' : 'Open menu'}
-        aria-expanded={open}
-      >
-        {open ? <HiXMark /> : <HiBars3 />}
-      </button>
+        <button
+          className="navbar-toggle"
+          onClick={() => setOpen((isOpen) => !isOpen)}
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+        >
+          {open ? <HiXMark /> : <HiBars3 />}
+        </button>
 
-      <nav className={`navbar-links ${open ? 'navbar-links--open' : ''}`}>
-        {links.map(({ id, label }) => (
-          <a
-            key={id}
-            href={`#${id}`}
-            className={`nav-link ${active === id ? 'active' : ''}`}
-            onClick={() => setOpen(false)}
-          >
-            {label}
-          </a>
-        ))}
-      </nav>
+        <nav className={`navbar-links ${open ? 'navbar-links--open' : ''}`}>
+          {links.map(({ id, label }) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              className={`nav-link ${active === id ? 'active' : ''}`}
+              onClick={() => setOpen(false)}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      </div>
     </header>
   )
 }
