@@ -1,4 +1,6 @@
 import { BsEnvelope, BsGeoAlt, BsGithub } from 'react-icons/bs'
+import StatusBar from '../components/StatusBar'
+import { HeroSky } from '../components/StarrySky'
 import { email, github } from '../links'
 
 // tilt the photo toward the cursor (x and y go from -0.5 to 0.5)
@@ -19,9 +21,8 @@ function resetTilt(event) {
 function Home() {
   return (
     <section id="home" className="home">
+      <HeroSky />
       <div className="home-content">
-        <p className="home-tag">3rd Year BS Information Technology Student</p>
-
         <h1 className="home-name">
           Hi, I'm <span>Alex Catequista</span>
         </h1>
@@ -69,6 +70,8 @@ function Home() {
           Hi there! <span className="wave">👋</span>
         </span>
       </div>
+
+      <StatusBar />
     </section>
   )
 }

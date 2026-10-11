@@ -1,18 +1,25 @@
-import { useEffect, useState } from 'react'
-import { HiBars3, HiXMark } from 'react-icons/hi2'
+import { createElement, useEffect, useRef, useState } from 'react'
+import {
+  HiOutlineChatBubbleLeftRight,
+  HiOutlineFolder,
+  HiOutlineHome,
+  HiOutlineUser,
+  HiOutlineWrenchScrewdriver,
+} from 'react-icons/hi2'
 
 const links = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'skills', label: 'Skills' },
-  { id: 'projects', label: 'Projects' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'home', label: 'Home', icon: HiOutlineHome },
+  { id: 'about', label: 'About', icon: HiOutlineUser },
+  { id: 'skills', label: 'Skills', icon: HiOutlineWrenchScrewdriver },
+  { id: 'projects', label: 'Projects', icon: HiOutlineFolder },
+  { id: 'contact', label: 'Contact', icon: HiOutlineChatBubbleLeftRight },
 ]
 
 function Navbar() {
   const [active, setActive] = useState('home')
-  const [open, setOpen] = useState(false)
+  const headerRef = useRef(null)
 
+  // highlight the link of the section in the middle of the screen
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -31,36 +38,69 @@ function Navbar() {
     return () => observer.disconnect()
   }, [])
 
+  // fill the progress line under the navbar as the page scrolls
+  useEffect(() => {
+    const updateProgress = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight
+      const progress = max > 0 ? window.scrollY / max : 0
+      headerRef.current?.style.setProperty('--progress', progress.toFixed(4))
+    }
+
+    updateProgress()
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    window.addEventListener('resize', updateProgress)
+
+    return () => {
+      window.removeEventListener('scroll', updateProgress)
+      window.removeEventListener('resize', updateProgress)
+    }
+  }, [])
+
   return (
-    <header className="navbar">
-      <div className="navbar-inner">
-        <a href="#home" className="navbar-logo" onClick={() => setOpen(false)}>
-          Alex Catequista
-        </a>
+    <>
+      <header className="navbar" ref={headerRef}>
+        <div className="navbar-inner">
+          <a href="#home" className="navbar-logo">
+            Alex Catequista
+          </a>
 
-        <button
-          className="navbar-toggle"
-          onClick={() => setOpen((isOpen) => !isOpen)}
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-        >
-          {open ? <HiXMark /> : <HiBars3 />}
-        </button>
+          <nav className="navbar-tabs" aria-label="Main">
+            {links.map(({ id, label }) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={`nav-tab ${active === id ? 'active' : ''}`}
+                aria-current={active === id ? 'true' : undefined}
+              >
+                {label}
+              </a>
+            ))}
+          </nav>
 
-        <nav className={`navbar-links ${open ? 'navbar-links--open' : ''}`}>
-          {links.map(({ id, label }) => (
-            <a
-              key={id}
-              href={`#${id}`}
-              className={`nav-link ${active === id ? 'active' : ''}`}
-              onClick={() => setOpen(false)}
-            >
-              {label}
-            </a>
-          ))}
-        </nav>
-      </div>
-    </header>
+          <a href="#contact" className="navbar-cta">
+            Contact
+          </a>
+        </div>
+        <span className="navbar-progress" aria-hidden="true" />
+      </header>
+
+      {/* mobile only: app-style bar at the bottom of the screen */}
+      <nav className="bottom-nav" aria-label="Main">
+        {links.map(({ id, label, icon }) => (
+          <a
+            key={id}
+            href={`#${id}`}
+            className={`bottom-nav-link ${active === id ? 'active' : ''}`}
+            aria-current={active === id ? 'true' : undefined}
+          >
+            <span className="bottom-nav-icon">
+              {createElement(icon, { 'aria-hidden': true })}
+            </span>
+            {label}
+          </a>
+        ))}
+      </nav>
+    </>
   )
 }
 

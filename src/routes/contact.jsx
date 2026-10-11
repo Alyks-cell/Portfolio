@@ -1,11 +1,10 @@
 import { createElement } from 'react'
 import {
   BsEnvelope,
-  BsFacebook,
   BsGithub,
-  BsInstagram,
   BsTelephone,
 } from 'react-icons/bs'
+import StarrySky, { Constellation } from '../components/StarrySky'
 import { email, github } from '../links'
 
 const contacts = [
@@ -27,35 +26,25 @@ const contacts = [
     value: 'github.com/Alyks-cell',
     href: github,
   },
-  {
-    icon: BsFacebook,
-    label: 'Facebook',
-    value: 'Alex Catequista',
-    href: 'https://www.facebook.com/bangtan.bangtan.bang.bangtan11/',
-  },
-  {
-    icon: BsInstagram,
-    label: 'Instagram',
-    value: '@alxndra_ctqist',
-    href: 'https://www.instagram.com/alxndra_ctqist/',
-  },
 ]
 
 function Contact() {
   return (
     <>
       <section id="contact" className="section contact">
+        <StarrySky />
         <div className="container contact-inner">
           <div className="contact-text" data-reveal>
             <h2 className="section-title">Get in Touch</h2>
             <p className="section-desc">
-              I'm currently looking for OJT/internship opportunities. Feel free
+              Feel free
               to send me a message if you'd like to work together or have any
               questions.
             </p>
             <a href={`mailto:${email}`} className="btn btn--primary">
               Send me an email
             </a>
+            <Constellation />
           </div>
 
           <ul className="contact-list" data-reveal>

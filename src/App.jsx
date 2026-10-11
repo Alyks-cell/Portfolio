@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import Navbar from './components/Nav'
+import Pet from './components/Pet'
 import Home from './routes/home'
 import About from './routes/about'
 import Skills from './routes/skills'
@@ -37,6 +38,7 @@ function App() {
         <Projects />
         <Contact />
       </main>
+      <Pet />
     </div>
   )
 }
