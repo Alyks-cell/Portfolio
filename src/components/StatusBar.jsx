@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { HiOutlineClock } from 'react-icons/hi2'
 import { VscCheck, VscSourceControl, VscWarning } from 'react-icons/vsc'
 
-// what I'm up to right now, typed out one after another
 const updates = [
   'building Study Buddy',
   'designing screens in Figma',

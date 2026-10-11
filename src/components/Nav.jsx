@@ -19,7 +19,6 @@ function Navbar() {
   const [active, setActive] = useState('home')
   const headerRef = useRef(null)
 
-  // highlight the link of the section in the middle of the screen
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -38,7 +37,6 @@ function Navbar() {
     return () => observer.disconnect()
   }, [])
 
-  // fill the progress line under the navbar as the page scrolls
   useEffect(() => {
     const updateProgress = () => {
       const max = document.documentElement.scrollHeight - window.innerHeight
@@ -84,7 +82,6 @@ function Navbar() {
         <span className="navbar-progress" aria-hidden="true" />
       </header>
 
-      {/* mobile only: app-style bar at the bottom of the screen */}
       <nav className="bottom-nav" aria-label="Main">
         {links.map(({ id, label, icon }) => (
           <a

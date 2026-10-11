@@ -3,7 +3,6 @@ import StatusBar from '../components/StatusBar'
 import { HeroSky } from '../components/StarrySky'
 import { email, github } from '../links'
 
-// tilt the photo toward the cursor (x and y go from -0.5 to 0.5)
 function handleTilt(event) {
   const box = event.currentTarget.getBoundingClientRect()
   const x = (event.clientX - box.left) / box.width - 0.5

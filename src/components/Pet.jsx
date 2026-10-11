@@ -1,24 +1,20 @@
 import { useEffect, useRef, useState } from 'react'
 
-// Ursi: a little star panda cub (Ursa Major = the Great Bear), like the
-// VS Code Pets extension. It walks to whichever section the reader is on
-// and sits there. Drag it anywhere, or click it to say hi!
-
 const SIZE = 48
 
 const palette = {
-  o: '#1d1d26', // outline
-  a: '#2b2b35', // black fur (ears, arms, legs)
-  e: '#3b3b47', // eye patches
-  b: '#fbfaf6', // white fur
-  d: '#d9d8e0', // fur shadow
-  l: '#ffffff', // fur highlight
-  c: '#f2efe6', // muzzle and belly
-  p: '#f5a3b5', // cheeks
-  k: '#0f0f14', // eyes
-  n: '#1d1d26', // nose
-  w: '#ffffff', // eye shine
-  y: '#ffd35a', // star marks
+  o: '#1d1d26',
+  a: '#2b2b35',
+  e: '#3b3b47',
+  b: '#fbfaf6',
+  d: '#d9d8e0',
+  l: '#ffffff',
+  c: '#f2efe6',
+  p: '#f5a3b5',
+  k: '#0f0f14',
+  n: '#1d1d26',
+  w: '#ffffff',
+  y: '#ffd35a',
 }
 
 const head = [
@@ -60,9 +56,8 @@ const phrases = [
   'Soooo Tireddddd',
 ]
 
-const SLEEP_AFTER = 10000 // falls asleep after 10s in the same section
+const SLEEP_AFTER = 10000
 
-// where Ursi sits in each section, and what it says when it gets there
 const perches = [
   { section: 'home', selector: '.status-bar', side: 'left', say: 'Hi there!' },
   { section: 'about', selector: '.about-details', side: 'right', say: "that's my human!" },
@@ -84,7 +79,6 @@ const startState = {
 
 const random = (min, max) => min + Math.random() * (max - min)
 
-// keep Ursi inside the screen (and above the mobile bottom nav)
 function clampToScreen(x, y) {
   const bottomSpace = window.innerWidth <= 700 ? 76 : 8
 
@@ -94,7 +88,6 @@ function clampToScreen(x, y) {
   }
 }
 
-// find the section in the middle of the screen and Ursi's spot in it
 function findPerch() {
   const middle = window.innerHeight / 2
   let perch = perches[0]
@@ -188,7 +181,7 @@ function Pet() {
     let lastTime = performance.now()
 
     const loop = (time) => {
-      const delta = Math.min(time - lastTime, 50)
+      const delta = Math.max(0, Math.min(time - lastTime, 50))
       lastTime = time
 
       const now = Date.now()
@@ -200,7 +193,6 @@ function Pet() {
         state = { ...state, ...clampToScreen(perch.x, perch.y), placed: true }
       }
 
-      // the reader moved to another section: walk over there
       if (perch && perch.section !== sectionRef.current) {
         sectionRef.current = perch.section
         attachedRef.current = false
@@ -217,14 +209,12 @@ function Pet() {
       if (dragRef.current?.moved) {
         state = { ...state, mood: 'held' }
       } else if (state.mood === 'happy' && now < state.until) {
-        // keep celebrating
+        state = { ...state, mood: 'happy' }
       } else if (!goal || now < pauseUntilRef.current) {
         state = { ...state, mood: resting }
       } else if (attachedRef.current) {
-        // sitting on its spot, so it scrolls along with the page
         state = { ...state, ...goal, mood: resting }
       } else {
-        // walk to the spot (faster when it is far away)
         const step = Math.max(0.14, distance / 700) * delta
 
         if (reduceMotion || step >= distance) {
@@ -246,7 +236,6 @@ function Pet() {
         }
       }
 
-      // blink for a moment every few seconds
       if (now > nextBlinkRef.current) {
         blinkUntilRef.current = now + 130
         nextBlinkRef.current = now + random(2500, 5000)
@@ -288,7 +277,6 @@ function Pet() {
     }, 1300)
   }
 
-  // dragging: pick Ursi up and drop it anywhere
   const handlePointerDown = (event) => {
     if (event.button !== 0) return
     event.currentTarget.setPointerCapture(event.pointerId)
@@ -323,7 +311,6 @@ function Pet() {
     dragRef.current = null
     if (!drag?.moved) return
 
-    // stay where it was dropped for a few seconds, then walk back to its spot
     const now = Date.now()
     justDraggedRef.current = true
     attachedRef.current = false
@@ -345,7 +332,7 @@ function Pet() {
   if (view.mood === 'happy' || view.mood === 'held') face = eyes.happy
   else if (view.mood === 'sleep' || view.blink) face = eyes.closed
 
-  const legs = view.mood === 'walk' ? feet[Math.floor(view.walked / 150) % 2] : feet[0]
+  const legs = view.mood === 'walk' ? feet[Math.abs(Math.floor(view.walked / 150)) % 2] : feet[0]
   const rows = [...head, ...face, ...body, ...legs]
 
   return (

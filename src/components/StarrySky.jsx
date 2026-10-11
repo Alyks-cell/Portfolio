@@ -1,7 +1,3 @@
-// Decorations for the contact section: a background of twinkling dots with
-// a shooting star now and then, and the Big Dipper drawing itself in a loop.
-
-// small seeded random so the stars stay in the same place on every load
 function seeded(seed) {
   let value = seed
   return () => {
@@ -18,7 +14,6 @@ const dots = Array.from({ length: 34 }, () => ({
   delay: (random() * 6).toFixed(2),
 }))
 
-// Big Dipper: handle A-B-C-D, bowl D-E-F-G-D
 const dipper = [
   [10, 75],
   [95, 37],
@@ -32,7 +27,6 @@ const dipper = [
 const dipperPath =
   `M${dipper.map(([x, y]) => `${x} ${y}`).join(' L')} L${dipper[3].join(' ')}`
 
-// four-point sparkle centered on 0,0
 const sparkle =
   'M0 -7 C1 -1 1 -1 7 0 C1 1 1 1 0 7 C-1 1 -1 1 -7 0 C-1 -1 -1 -1 0 -7Z'
 
@@ -87,8 +81,6 @@ export function Constellation() {
   )
 }
 
-// Background for the hero: a big Big Dipper (part of Ursa Major) with
-// twinkling stars and two shooting stars
 const randomHero = seeded(11)
 const heroDots = Array.from({ length: 60 }, () => ({
   x: Math.round(randomHero() * 1440),

@@ -56,7 +56,6 @@ button:focus-visible {
   margin: 0 auto;
 }
 
-/* fade in sections on scroll */
 [data-reveal] {
   opacity: 0;
   transform: translateY(16px);
@@ -67,8 +66,6 @@ button:focus-visible {
   opacity: 1;
   transform: none;
 }
-
-/* ---------- Buttons ---------- */
 
 .btn {
   display: inline-block;
@@ -102,8 +99,6 @@ button:focus-visible {
   background: var(--accent-soft);
 }
 
-/* ---------- Navbar ---------- */
-
 .navbar {
   --progress: 0;
   position: sticky;
@@ -129,7 +124,6 @@ button:focus-visible {
   font-weight: 600;
 }
 
-/* links look like browser / editor tabs sitting on the bottom line */
 .navbar-tabs {
   display: flex;
   align-self: flex-end;
@@ -162,13 +156,11 @@ button:focus-visible {
   font-weight: 500;
 }
 
-/* match the tab to the gray sections so it looks attached to the page */
 .navbar:has(.nav-tab.active[href='#about']) .nav-tab.active,
 .navbar:has(.nav-tab.active[href='#projects']) .nav-tab.active {
   background: var(--bg-alt);
 }
 
-/* thin line that fills up as you scroll */
 .navbar-progress {
   position: absolute;
   z-index: 1;
@@ -188,8 +180,6 @@ button:focus-visible {
 .bottom-nav {
   display: none;
 }
-
-/* ---------- Sections ---------- */
 
 .section {
   padding: 96px 24px;
@@ -218,8 +208,6 @@ button:focus-visible {
   margin-bottom: 40px;
   color: var(--text-light);
 }
-
-/* ---------- Home ---------- */
 
 .portfolio {
   overflow-x: clip;
@@ -306,7 +294,6 @@ button:focus-visible {
   perspective: 900px;
 }
 
-/* offset block behind the photo */
 .home-photo::before {
   position: absolute;
   z-index: -1;
@@ -327,7 +314,6 @@ button:focus-visible {
   transition: transform 0.3s ease, box-shadow 0.3s;
 }
 
-/* "Hi there!" badge that pops up on hover */
 .home-photo-hi {
   position: absolute;
   top: 18px;
@@ -373,7 +359,6 @@ button:focus-visible {
   }
 }
 
-/* VS Code style status bar at the bottom of the hero (StatusBar.jsx) */
 .status-bar {
   display: flex;
   grid-column: 1 / -1;
@@ -449,8 +434,6 @@ button:focus-visible {
   white-space: nowrap;
 }
 
-/* the Big Dipper peeking above the photo */
-/* starry background behind the hero (HeroSky in StarrySky.jsx) */
 .home {
   position: relative;
   isolation: isolate;
@@ -494,14 +477,11 @@ button:focus-visible {
   opacity: 1;
 }
 
-
 @keyframes wave {
   0%, 60%, 100% { transform: rotate(0deg); }
   10%, 30% { transform: rotate(16deg); }
   20%, 40% { transform: rotate(-10deg); }
 }
-
-/* ---------- Pet (Pet.jsx) ---------- */
 
 .pet-layer {
   position: fixed;
@@ -558,7 +538,6 @@ button:focus-visible {
   animation: pet-jump 0.5s ease-out 2;
 }
 
-/* dangling while being dragged */
 .pet--held .pet-body svg {
   animation: pet-dangle 0.6s ease-in-out infinite;
   transform-origin: 50% 0;
@@ -583,7 +562,6 @@ button:focus-visible {
   animation: pet-shadow 0.5s ease-out 2;
 }
 
-/* the star marks glow softly */
 .pet-star {
   animation: pet-glow 2s ease-in-out infinite;
 }
@@ -629,7 +607,6 @@ button:focus-visible {
   pointer-events: none;
 }
 
-/* little tail on the speech bubble */
 .pet-bubble::after {
   position: absolute;
   top: 100%;
@@ -727,8 +704,6 @@ button:focus-visible {
   100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), -46px) scale(1.1); }
 }
 
-/* ---------- About ---------- */
-
 .about {
   background: var(--bg-alt);
 }
@@ -786,8 +761,6 @@ button:focus-visible {
   color: var(--text-light);
 }
 
-/* ---------- Skills ---------- */
-
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -822,8 +795,6 @@ button:focus-visible {
   background: var(--bg-alt);
   font-size: 14px;
 }
-
-/* ---------- Projects ---------- */
 
 .projects {
   background: var(--bg-alt);
@@ -961,8 +932,6 @@ button:focus-visible {
   text-decoration: underline;
 }
 
-/* ---------- Contact ---------- */
-
 .contact {
   position: relative;
   overflow: hidden;
@@ -974,7 +943,6 @@ button:focus-visible {
   z-index: 1;
 }
 
-/* starry background (StarrySky.jsx) */
 .sky {
   position: absolute;
   inset: 0;
@@ -1033,7 +1001,6 @@ button:focus-visible {
   50% { opacity: 0.45; }
 }
 
-/* lines draw in, stay for a bit, then fade out and start again */
 @keyframes draw-constellation {
   0% { stroke-dashoffset: 1; opacity: 0.35; }
   35% { stroke-dashoffset: 0; }
@@ -1116,8 +1083,6 @@ button:focus-visible {
   color: var(--accent);
 }
 
-/* ---------- Footer ---------- */
-
 .footer {
   padding: 24px;
   border-top: 1px solid var(--border);
@@ -1134,8 +1099,6 @@ button:focus-visible {
 .footer a:hover {
   color: var(--accent);
 }
-
-/* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {
   .nav-tab {
@@ -1204,7 +1167,6 @@ button:focus-visible {
     background: var(--accent-soft);
   }
 
-  /* app-style bar at the bottom, easy to reach with your thumb */
   .bottom-nav {
     position: fixed;
     z-index: 60;
